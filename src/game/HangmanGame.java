@@ -28,16 +28,15 @@ public class HangmanGame implements HangmanGameInterface {
 			return false;
 		}
 
-		guessedLetters.add(letter);
-
-		if (word.contains(Character.toString(letter))) {
+		if (word.toLowerCase().contains(Character.toString(letter).toLowerCase())) {
+			guessedLetters.add(letter);
 			StringBuilder newHangmanWord = new StringBuilder(hangmanWord);
 			for (int i = 0; i < word.length(); i++) {
-				if (word.charAt(i) == letter) {
+				if (Character.toString(word.charAt(i)).equalsIgnoreCase(Character.toString(letter))) {
 					newHangmanWord.setCharAt(i, letter);
-					correctGuesses++;
 				}
 			}
+			correctGuesses++;
 			hangmanWord = newHangmanWord.toString();
 			return true;
 		} else {

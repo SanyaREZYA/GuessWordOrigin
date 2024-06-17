@@ -18,7 +18,8 @@ public class HangmanGame implements HangmanGameInterface {
 	public HangmanGame(LexiconInterface l) {
 		this.lexicon = l;
 		this.word = l.getRandomWord();
-		this.hangmanWord = "*".repeat(word.length());
+		this.hangmanWord = "-".repeat(word.length());
+//		this.hangmanWord = "*".repeat(word.length());
 		this.guessedLetters = new HashSet<>();
 	}
 
@@ -71,7 +72,8 @@ public class HangmanGame implements HangmanGameInterface {
 
 	@Override
 	public boolean isGameWon() {
-		return !hangmanWord.contains("*");
+		return !hangmanWord.contains("-");
+//		return !hangmanWord.contains("*");
 	}
 
 	@Override

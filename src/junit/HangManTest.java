@@ -75,7 +75,7 @@ public class HangManTest{
 			for (int j = guessLetters.length() - 1; j >= i; j--){
 				placeHolderString = placeHolderString.replaceAll(""+guessLetters.toUpperCase().charAt(j), "-");
 			}
-			assertEquals(placeHolderString, hg.getPartlyGuessedWord());
+			assertEquals(placeHolderString, hg.getPartlyGuessedWord()); // тут ламається, Expected :W----W---- Actual :w----w----
 			char ch = guessLetters.charAt(i);
 			assertTrue(hg.guess(ch));
 		}

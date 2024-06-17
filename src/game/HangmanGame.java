@@ -2,8 +2,8 @@ package game;
 
 import lexicon.LexiconInterface;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HangmanGame implements HangmanGameInterface {
 
@@ -19,7 +19,7 @@ public class HangmanGame implements HangmanGameInterface {
 		this.lexicon = l;
 		this.word = l.getRandomWord();
 		this.hangmanWord = "*".repeat(word.length());
-		this.guessedLetters = new HashSet<>();
+		this.guessedLetters = new LinkedHashSet<>();
 	}
 
 	@Override
@@ -28,12 +28,13 @@ public class HangmanGame implements HangmanGameInterface {
 			return false;
 		}
 
-		if (word.toLowerCase().contains(Character.toString(letter).toLowerCase())) {
-			guessedLetters.add(letter);
+		Character letterInUpperCase = Character.toUpperCase(letter);
+		if (word.toUpperCase().contains(Character.toString(letterInUpperCase)) && !hangmanWord.contains(letterInUpperCase.toString())) {
+			guessedLetters.add(letterInUpperCase);
 			StringBuilder newHangmanWord = new StringBuilder(hangmanWord);
 			for (int i = 0; i < word.length(); i++) {
 				if (Character.toString(word.charAt(i)).equalsIgnoreCase(Character.toString(letter))) {
-					newHangmanWord.setCharAt(i, letter);
+					newHangmanWord.setCharAt(i, letterInUpperCase);
 				}
 			}
 			correctGuesses++;
@@ -59,9 +60,9 @@ public class HangmanGame implements HangmanGameInterface {
 	public String getGuessedLetters() {
 		StringBuilder guessed = new StringBuilder();
 		for (char c : guessedLetters) {
-			guessed.append(c).append(' ');
+			guessed.append(c);
 		}
-		return guessed.toString().trim();
+		return guessed.toString();
 	}
 
 	@Override

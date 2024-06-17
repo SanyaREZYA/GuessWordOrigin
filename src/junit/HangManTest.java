@@ -73,7 +73,7 @@ public class HangManTest{
 		for (int i = 0; i < guessLetters.length(); i++){
 			placeHolderString = new String(testString);
 			for (int j = guessLetters.length() - 1; j >= i; j--){
-				placeHolderString = placeHolderString.replaceAll(""+guessLetters.toUpperCase().charAt(j), "-");
+				placeHolderString = placeHolderString.replaceAll(""+guessLetters.toUpperCase().charAt(j), "*");
 			}
 			assertEquals(placeHolderString, hg.getPartlyGuessedWord());
 			char ch = guessLetters.charAt(i);
@@ -102,7 +102,7 @@ public class HangManTest{
 		for (int i = 0; i < 3; i++){
 			placeHolderString = new String(testString);
 			for (int j = guessLetters.length() - 1; j >= i; j--){
-				placeHolderString = placeHolderString.replaceAll(""+guessLetters.toUpperCase().charAt(j), "-");
+				placeHolderString = placeHolderString.replaceAll(""+guessLetters.toUpperCase().charAt(j), "*");
 			}
 			assertEquals(placeHolderString, hg.getPartlyGuessedWord());
 			char ch = guessLetters.charAt(i);

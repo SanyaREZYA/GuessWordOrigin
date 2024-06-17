@@ -2,83 +2,89 @@ package game;
 
 import lexicon.LexiconInterface;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class HangmanGame implements HangmanGameInterface {
 
-	public static final int ATTEMPTION = 9;
-	private LexiconInterface lexicon;
-	private String hangmanWord;
-	private String word;
-	private Set<Character> guessedLetters;
-	private int correctGuesses = 0;
-	private int incorrectGuesses = 0;
+	private final LexiconInterface lexicon;
+	private final String hangmanWord;
+	private final Set<Character> guessedLetters;
+	private int guessesLeft;
+	private int correctGuesses;
+	private int incorrectGuesses;
 
 	public HangmanGame(LexiconInterface l) {
-		this.lexicon = l;
-		this.word = l.getRandomWord();
-		this.hangmanWord = "-".repeat(word.length());
-//		this.hangmanWord = "*".repeat(word.length());
-		this.guessedLetters = new HashSet<>();
+		lexicon = l;
+		hangmanWord = lexicon.getWord(0).toUpperCase();
+		guessedLetters = new LinkedHashSet<>();
+		guessesLeft = 9;
+		correctGuesses = 0;
+		incorrectGuesses = 0;
 	}
 
 	@Override
 	public boolean guess(char letter) {
+		letter = Character.toUpperCase(letter);
+
 		if (guessedLetters.contains(letter)) {
-			return false;
+			incorrectGuesses++;
+			return false;  // Already guessed this letter
 		}
 
-		if (word.toLowerCase().contains(Character.toString(letter).toLowerCase())) {
+		if (hangmanWord.contains(String.valueOf(letter))) {
 			guessedLetters.add(letter);
-			StringBuilder newHangmanWord = new StringBuilder(hangmanWord);
-			for (int i = 0; i < word.length(); i++) {
-				if (Character.toString(word.charAt(i)).equalsIgnoreCase(Character.toString(letter))) {
-					newHangmanWord.setCharAt(i, letter);
-				}
-			}
 			correctGuesses++;
-			hangmanWord = newHangmanWord.toString();
-			return true;
 		} else {
 			incorrectGuesses++;
-			return false;
+			guessesLeft--;
 		}
+
+		return hangmanWord.contains(String.valueOf(letter));
 	}
+
 
 	@Override
 	public String getPartlyGuessedWord() {
-		return hangmanWord;
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < hangmanWord.length(); i++) {
+			char letter = hangmanWord.charAt(i);
+			if (guessedLetters.contains(letter)) {
+				result.append(letter);
+			} else {
+				result.append("-");
+			}
+		}
+		return result.toString();
 	}
 
 	@Override
 	public String getHangmanWord() {
-		return word;
+		return hangmanWord;
 	}
 
 	@Override
 	public String getGuessedLetters() {
 		StringBuilder guessed = new StringBuilder();
-		for (char c : guessedLetters) {
-			guessed.append(c).append(' ');
+		for (char letter : guessedLetters) {
+			guessed.append(letter);
 		}
-		return guessed.toString().trim();
+		return guessed.toString();
 	}
 
 	@Override
 	public boolean isGameLost() {
-		return incorrectGuesses == ATTEMPTION;
+		return guessesLeft <= 0;
 	}
 
 	@Override
 	public boolean isGameWon() {
-		return !hangmanWord.contains("-");
-//		return !hangmanWord.contains("*");
+		return getPartlyGuessedWord().equals(hangmanWord);
 	}
 
 	@Override
 	public int getGuessesLeft() {
-		return ATTEMPTION - incorrectGuesses;
+		return guessesLeft;
 	}
 
 	@Override
@@ -91,13 +97,4 @@ public class HangmanGame implements HangmanGameInterface {
 		return correctGuesses;
 	}
 
-	@Override
-	public String getNewWord() {
-		this.word = lexicon.getRandomWord();
-		this.hangmanWord = "*".repeat(word.length());
-		this.guessedLetters.clear();
-		this.correctGuesses = 0;
-		this.incorrectGuesses = 0;
-		return this.word;
-	}
 }

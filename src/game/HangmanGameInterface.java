@@ -57,5 +57,4 @@ public interface HangmanGameInterface {
 	 */
 	public abstract int getCorrectGuesses();
 
-	public abstract String getNewWord();
 }

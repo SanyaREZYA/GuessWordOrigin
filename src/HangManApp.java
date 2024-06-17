@@ -97,7 +97,7 @@ public class HangManApp {
 	}
 
 	public static void startGame() {
-		hangmanGame.getNewWord();
+//		hangmanGame.getNewWord();
 		updateWord(hangmanLabel);
 		attemptLabel.setText("Attempts left: " + hangmanGame.getGuessesLeft());
 		usedLetterLabel.setText("Used Letters: ");

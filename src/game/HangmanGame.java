@@ -52,7 +52,7 @@ public class HangmanGame implements HangmanGameInterface {
 			if (guessedLetters.contains(letter)) {
 				result.append(letter);
 			} else {
-				result.append("-");
+				result.append("*");
 			}
 		}
 		return result.toString();
